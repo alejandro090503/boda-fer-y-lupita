@@ -55,6 +55,20 @@ section{padding:64px 22px}
 @keyframes ldFade{to{opacity:1}}
 @keyframes ldBar{to{width:100%}}
 
+/* ── MUSIC BTN ────────────────────────────────────────── */
+#music-btn{
+  position:fixed;bottom:24px;right:24px;z-index:900;
+  width:48px;height:48px;border-radius:50%;border:1px solid rgba(169,104,0,.40);
+  background:rgba(255,242,213,.90);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;box-shadow:0 4px 20px rgba(123,41,0,.25);
+  transition:transform .3s ease,border-color .3s ease;
+}
+#music-btn:hover{transform:scale(1.08);border-color:var(--peach)}
+#music-btn svg{width:18px;height:18px;fill:var(--peach);transition:fill .3s ease}
+#music-btn.playing{animation:musicPulse 2s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 4px 20px rgba(123,41,0,.25)}50%{box-shadow:0 4px 28px rgba(255,98,80,.45)}}
+
 /* ── PROGRESS BAR ─────────────────────────────────────── */
 #prog{
   position:fixed;top:0;left:0;height:2px;width:0%;z-index:1000;
@@ -558,6 +572,13 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 <!-- TOAST -->
 <div id="toast"></div>
 
+<!-- MÚSICA -->
+<audio id="bgMusic" loop preload="auto"><source src="song.mp3" type="audio/mpeg"></audio>
+<button id="music-btn" aria-label="Pausar música" onclick="toggleMusic()">
+  <svg id="music-icon-play" viewBox="0 0 24 24" style="display:none"><polygon points="6,4 20,12 6,20"/></svg>
+  <svg id="music-icon-pause" viewBox="0 0 24 24"><rect x="5" y="4" width="4" height="16"/><rect x="15" y="4" width="4" height="16"/></svg>
+</button>
+
 
 <!-- ════════════════ 1. HERO ════════════════════════════ -->
 <section id="hero">
@@ -1031,9 +1052,31 @@ document.addEventListener('DOMContentLoaded', () => {
   setTimeout(dismissLoader, 1800);
 });
 
+function toggleMusic() {
+  const a = document.getElementById('bgMusic');
+  const btn = document.getElementById('music-btn');
+  const iconPlay = document.getElementById('music-icon-play');
+  const iconPause = document.getElementById('music-icon-pause');
+  if (a.paused) {
+    a.play();
+    btn.classList.add('playing');
+    btn.setAttribute('aria-label','Pausar música');
+    iconPlay.style.display='none'; iconPause.style.display='block';
+  } else {
+    a.pause();
+    btn.classList.remove('playing');
+    btn.setAttribute('aria-label','Reproducir música');
+    iconPlay.style.display='block'; iconPause.style.display='none';
+  }
+}
+
 function dismissLoader() {
   const loader = document.getElementById('loader');
   if (!loader) return;
+  const bgm = document.getElementById('bgMusic');
+  if (bgm) bgm.play().then(() => {
+    document.getElementById('music-btn').classList.add('playing');
+  }).catch(() => {});
   gsap.to(loader, {
     opacity: 0, duration: .6, ease: 'power2.out',
     onComplete() {
