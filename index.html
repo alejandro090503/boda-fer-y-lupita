@@ -1700,26 +1700,26 @@ function openEnvelope() {
   if (content) { content.style.transition = 'opacity .4s ease'; content.style.opacity = '0'; content.style.pointerEvents = 'none'; }
   if (overlay) { overlay.style.transition = 'opacity .5s ease'; overlay.style.opacity = '0'; }
   if (!vid) { setTimeout(dismissLoader, 600); return; }
+  var loader = document.getElementById('loader');
   // play() debe llamarse sincronamente dentro del handler de tap (iOS)
   const playPromise = vid.play();
   layer.classList.add('active');
-  function fadeAtThree() {
-    layer.style.transition = 'opacity .8s ease';
-    layer.style.opacity = '0';
-    setTimeout(dismissLoader, 800);
+  function cutAndFade() {
+    vid.pause();
+    loader.style.transition = 'opacity .9s ease';
+    loader.style.opacity = '0';
+    setTimeout(dismissLoader, 950);
   }
   if (playPromise !== undefined) {
     playPromise.then(function() {
-      setTimeout(fadeAtThree, 3000);
-      vid.addEventListener('ended', function() { if (document.getElementById('loader')) dismissLoader(); }, { once: true });
+      setTimeout(cutAndFade, 3000);
     }).catch(function() {
       setTimeout(dismissLoader, 600);
     });
   } else {
-    setTimeout(fadeAtThree, 3000);
-    vid.addEventListener('ended', function() { if (document.getElementById('loader')) dismissLoader(); }, { once: true });
+    setTimeout(cutAndFade, 3000);
   }
-  // Safety: dismissa si el video no termina en 15s
+  // Safety
   setTimeout(function() { if (document.getElementById('loader')) dismissLoader(); }, 15000);
 }
 
