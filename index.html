@@ -1703,14 +1703,21 @@ function openEnvelope() {
   // play() debe llamarse sincronamente dentro del handler de tap (iOS)
   const playPromise = vid.play();
   layer.classList.add('active');
+  function fadeAtThree() {
+    layer.style.transition = 'opacity .8s ease';
+    layer.style.opacity = '0';
+    setTimeout(dismissLoader, 800);
+  }
   if (playPromise !== undefined) {
     playPromise.then(function() {
-      vid.addEventListener('ended', function() { setTimeout(dismissLoader, 400); }, { once: true });
+      setTimeout(fadeAtThree, 3000);
+      vid.addEventListener('ended', function() { if (document.getElementById('loader')) dismissLoader(); }, { once: true });
     }).catch(function() {
       setTimeout(dismissLoader, 600);
     });
   } else {
-    vid.addEventListener('ended', function() { setTimeout(dismissLoader, 400); }, { once: true });
+    setTimeout(fadeAtThree, 3000);
+    vid.addEventListener('ended', function() { if (document.getElementById('loader')) dismissLoader(); }, { once: true });
   }
   // Safety: dismissa si el video no termina en 15s
   setTimeout(function() { if (document.getElementById('loader')) dismissLoader(); }, 15000);
