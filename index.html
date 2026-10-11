@@ -1267,6 +1267,8 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 
 /* ── ÁLBUM DE FOTOS (QR → /album) ─────────────────────── */
 #qr-album{background:var(--ink3);text-align:center}
+/* La etiqueta cae encima de las flores del fondo: halo color papel para que se lea */
+#qr-album .lbl{position:relative;z-index:2;text-shadow:0 0 6px #F7EEDC,0 0 12px #F7EEDC,0 0 18px #F7EEDC;font-weight:600}
 .qr-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;margin-top:22px}
 .qr-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--cream);opacity:.92;line-height:1.7;max-width:290px}
 .album-qr{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:18px}
