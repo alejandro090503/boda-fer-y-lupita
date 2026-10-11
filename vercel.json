@@ -18,5 +18,12 @@
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
     }
+  ],
+  "redirects": [
+    {
+      "source": "/album",
+      "destination": "https://panel-invitados.vercel.app/subir/fer-y-lupita",
+      "permanent": false
+    }
   ]
 }

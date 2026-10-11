@@ -1265,6 +1265,19 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
 .corner.br{bottom:12px;right:12px;border-bottom-width:1px;border-right-width:1px}
 .corner.on{border-color:rgba(255,98,80,.3)}
 
+/* ── ÁLBUM DE FOTOS (QR → /album) ─────────────────────── */
+#qr-album{background:var(--ink3);text-align:center}
+.qr-wrap{display:flex;flex-direction:column;align-items:center;gap:20px;margin-top:22px}
+.qr-hint{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;color:var(--cream);opacity:.92;line-height:1.7;max-width:290px}
+.album-qr{position:relative;display:inline-flex;flex-direction:column;align-items:center;gap:18px}
+.qr-img{width:200px;height:200px;border-radius:14px;border:1px solid rgba(184,137,58,.40);padding:12px;background:var(--ink);box-shadow:0 8px 30px rgba(157,68,35,.18)}
+.qr-img img{width:100%;height:100%;display:block;border-radius:6px}
+.album-qr.bloqueado .qr-img img{filter:blur(7px);opacity:.75}
+.album-qr.bloqueado .album-btn{pointer-events:none;opacity:.45}
+.album-btn{width:auto;min-width:220px;padding:15px 30px}
+.album-aviso{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--cream);opacity:.85;line-height:1.7;max-width:300px}
+.album-qr:not(.bloqueado) + .album-aviso{display:none}
+
 /* ── FLORAL SECTION BACKGROUNDS ──────────────────────── */
 .sec-floral{
   position:absolute;inset:0;z-index:0;pointer-events:none;
@@ -1650,6 +1663,36 @@ section.has-sec-waves{padding-top:84px;padding-bottom:86px}
     </button>
     <p id="rsvp-feedback"></p>
   </div>
+</section>
+
+
+<!-- ════════════════ 11b. ÁLBUM DE FOTOS ═══════════════ -->
+<section id="qr-album">
+  <div class="sec-floral" style="background-image:url('./bg-floral-4.jpeg')"></div>
+  <span class="lbl">Comparte tus fotos</span>
+  <h2 class="ttl">Álbum de fotos</h2>
+  <div class="gline"></div>
+  <div class="qr-wrap">
+    <p class="qr-hint">Ayúdanos a guardar cada momento: sube aquí las fotos que tomes durante el evento.</p>
+    <!-- Álbum de Elysium: el QR abre /album → panel-invitados.vercel.app/subir/fer-y-lupita -->
+    <div class="album-qr" data-fecha="2026-10-24">
+      <div class="qr-img">
+        <img src="qr-album.png" alt="Código QR del álbum de fotos" width="176" height="176">
+      </div>
+      <a class="btn btn-gold album-btn" href="/album">Subir mis fotos</a>
+    </div>
+    <p class="album-aviso">El álbum de fotos se habilita el día del evento. Regresa aquí y sube todas tus fotos de la noche ✨</p>
+  </div>
+  <script>
+    /* Se desbloquea solo el día del evento (la base además rechaza fotos antes de tiempo) */
+    (function(){
+      var box = document.querySelector('.album-qr');
+      if(!box) return;
+      var p = box.dataset.fecha.split('-');
+      var abre = new Date(+p[0], +p[1] - 1, +p[2], 0, 0, 0);
+      if(new Date() < abre) box.classList.add('bloqueado');
+    })();
+  </script>
 </section>
 
 
